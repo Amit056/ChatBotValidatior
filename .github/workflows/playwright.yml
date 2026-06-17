@@ -1,27 +1,157 @@
-name: Playwright Tests
+name: Playwright Test
+
 on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select Environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - qa
+          - staging
+          - prod
+
+      testType:
+        description: 'Select Test Suite'
+        required: true
+        default: 'smoke'
+        type: choice
+        options:
+          - smoke
+          - sanity
+          - regression
+          - all
+
 jobs:
-  test:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
+  build-and-test:
+    name: Run ${{ inputs.testType }} Tests on ${{ inputs.environment }}
+    runs-on: [self-hosted, myaci, dev]
+
+    env:
+      CI: false
+      AWS_REGION: us-east-1
+      S3_BUCKET: playwright-acilearning-test-report
+
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23.x'
+
+      - name: Install Dependencies
+        run: |
+          npm install
+          npx playwright install --with-deps
+
+      - name: Run Playwright Tests
+        run: |
+          ENV_INPUT="${{ github.event.inputs.environment }}"
+          TEST_TYPE="${{ github.event.inputs.testType }}"
+
+          echo "Environment: $ENV_INPUT"
+          echo "Test Suite: $TEST_TYPE"
+
+          if [ "$TEST_TYPE" = "all" ]; then
+            GREP_ARG=""
+          else
+            GREP_ARG="--grep @$TEST_TYPE"
+          fi
+
+          if [ "$ENV_INPUT" = "dev" ]; then
+            xvfb-run -a npx playwright test $GREP_ARG --project=dev
+
+          elif [ "$ENV_INPUT" = "qa" ]; then
+            xvfb-run -a npx playwright test $GREP_ARG --project=qa
+
+          elif [ "$ENV_INPUT" = "staging" ]; then
+            xvfb-run -a npx playwright test $GREP_ARG --project=staging
+
+          elif [ "$ENV_INPUT" = "prod" ]; then
+            xvfb-run -a npx playwright test $GREP_ARG --project=prod
+
+          else
+            echo "Invalid Environment Selected"
+            exit 1
+          fi
+
+      - name: Generate Allure Report
+        if: always()
+        run: |
+          npx allure generate allure-results --clean -o allure-report
+
+      - name: Install AWS CLI
+        if: always()
+        run: |
+          if ! command -v aws &> /dev/null; then
+            sudo apt-get update
+            sudo apt-get install -y awscli
+          fi
+
+      - name: Upload Allure Report to S3
+        if: always()
+        run: |
+          REPORT_DATE=$(date +'%Y-%m-%d_%H-%M-%S')
+
+          REPORT_PATH="allure-report/${{ github.event.inputs.environment }}/${{ github.event.inputs.testType }}/$REPORT_DATE"
+
+          echo "REPORT_PATH=$REPORT_PATH" >> $GITHUB_ENV
+
+          aws s3 sync allure-report s3://$S3_BUCKET/$REPORT_PATH/ --delete
+
+          echo "Report uploaded successfully"
+          echo "https://$S3_BUCKET.s3.amazonaws.com/$REPORT_PATH/index.html"
+
+      - name: Cleanup Old Reports (Keep Last 5)
+        if: always()
+        run: |
+          PREFIX="allure-report/${{ github.event.inputs.environment }}/${{ github.event.inputs.testType }}/"
+
+          REPORTS=$(aws s3 ls s3://$S3_BUCKET/$PREFIX | awk '{print $2}' | sort -r)
+
+          COUNT=0
+
+          for report in $REPORTS; do
+            COUNT=$((COUNT+1))
+
+            if [ $COUNT -gt 5 ]; then
+              echo "Deleting old report: $report"
+              aws s3 rm "s3://$S3_BUCKET/$PREFIX$report" --recursive
+            fi
+          done
+
+      - name: Email Allure Report Link
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.sendgrid.net
+          server_port: 587
+          secure: starttls
+          username: apikey
+          password: ${{ secrets.SENDGRID_API_KEY }}
+
+          subject: >
+            Playwright ${{ github.event.inputs.testType }}
+            Test Report - ${{ github.event.inputs.environment }}
+
+          to: ${{ vars.MAIL_TO }}
+          from: ${{ vars.MAIL_FROM }}
+
+          body: |
+            Hi Team,
+
+            Playwright execution completed.
+
+            Environment: ${{ github.event.inputs.environment }}
+            Test Suite: ${{ github.event.inputs.testType }}
+
+            Allure Report:
+            https://playwright-acilearning-test-report.s3.amazonaws.com/${{ env.REPORT_PATH }}/index.html
+
+            Regards,
+            QA Automation Team
