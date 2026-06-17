@@ -1,0 +1,161 @@
+{
+    "metrics": {
+        "iteration_duration": {
+            "max": 2939.2537,
+            "p(90)": 1348.95226,
+            "p(95)": 1423.03567,
+            "avg": 1200.850956660039,
+            "min": 1106.0754,
+            "med": 1150.1369
+        },
+        "checks": {
+            "passes": 863,
+            "fails": 1652,
+            "value": 0.34314115308151094
+        },
+        "http_req_tls_handshaking": {
+            "avg": 0.3543426242544732,
+            "min": 0,
+            "med": 0,
+            "max": 63.9194,
+            "p(90)": 0,
+            "p(95)": 0
+        },
+        "http_req_blocked": {
+            "p(95)": 0,
+            "avg": 0.6284814314115307,
+            "min": 0,
+            "med": 0,
+            "max": 103.3498,
+            "p(90)": 0
+        },
+        "http_req_waiting": {
+            "avg": 38.241581749503,
+            "min": 11.3806,
+            "med": 27.4677,
+            "max": 1834.0141,
+            "p(90)": 41.8338,
+            "p(95)": 52.36140999999998
+        },
+        "data_received": {
+            "count": 4127446,
+            "rate": 67897.78417539276
+        },
+        "http_req_connecting": {
+            "min": 0,
+            "med": 0,
+            "max": 30.4948,
+            "p(90)": 0,
+            "p(95)": 0,
+            "avg": 0.20795829025844928
+        },
+        "vus_max": {
+            "value": 10,
+            "min": 10,
+            "max": 10
+        },
+        "http_reqs": {
+            "count": 2515,
+            "rate": 41.37254059801456
+        },
+        "vus": {
+            "value": 10,
+            "min": 10,
+            "max": 10
+        },
+        "http_req_duration{expected_response:true}": {
+            "max": 1834.0141,
+            "p(90)": 47.33494000000001,
+            "p(95)": 58.39518999999999,
+            "avg": 43.70509675550407,
+            "min": 16.0226,
+            "med": 32.4731
+        },
+        "http_req_failed": {
+            "passes": 1652,
+            "fails": 863,
+            "thresholds": {
+                "rate<0.01": true
+            },
+            "value": 0.6568588469184891
+        },
+        "data_sent": {
+            "count": 249551,
+            "rate": 4105.192397127289
+        },
+        "http_req_duration": {
+            "p(90)": 42.72492,
+            "p(95)": 52.73768999999993,
+            "avg": 39.104710218687906,
+            "min": 11.3806,
+            "med": 28.255,
+            "max": 1834.0141,
+            "thresholds": {
+                "p(95)<2000": false
+            }
+        },
+        "http_req_sending": {
+            "avg": 0.2551476341948309,
+            "min": 0,
+            "med": 0,
+            "max": 9.8654,
+            "p(90)": 0.6284399999999999,
+            "p(95)": 0.7941599999999996
+        },
+        "iterations": {
+            "count": 503,
+            "rate": 8.274508119602912
+        },
+        "http_req_receiving": {
+            "max": 9.9465,
+            "p(90)": 2.0946199999999986,
+            "p(95)": 3.4067899999999924,
+            "avg": 0.6079808349900603,
+            "min": 0,
+            "med": 0
+        }
+    },
+    "root_group": {
+        "name": "",
+        "path": "",
+        "id": "d41d8cd98f00b204e9800998ecf8427e",
+        "groups": {},
+        "checks": {
+                "session created": {
+                    "fails": 413,
+                    "name": "session created",
+                    "path": "::session created",
+                    "id": "fe128c16ddba45c98ab17e9ba70507fd",
+                    "passes": 90
+                },
+                "chat ui loaded": {
+                    "id": "6078cb258ce2ab04011b6004c6e5b170",
+                    "passes": 503,
+                    "fails": 0,
+                    "name": "chat ui loaded",
+                    "path": "::chat ui loaded"
+                },
+                "session refreshed": {
+                    "fails": 413,
+                    "name": "session refreshed",
+                    "path": "::session refreshed",
+                    "id": "8fc879a4f5796728da1b8203c3f1e4a2",
+                    "passes": 90
+                },
+                "config loaded": {
+                    "name": "config loaded",
+                    "path": "::config loaded",
+                    "id": "7cd7797bbc059c33cddbb31454fdb7da",
+                    "passes": 90,
+                    "fails": 413
+                },
+                "chat response received": {
+                    "name": "chat response received",
+                    "path": "::chat response received",
+                    "id": "66b4cc7b0ede5af861696b0ccebffd9c",
+                    "passes": 90,
+                    "fails": 413
+                }
+            }
+    }
+}
