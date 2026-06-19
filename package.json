@@ -18,11 +18,11 @@
     "cross-env": "^10.1.0",
     "k6-reporter": "github:benc-uk/k6-reporter",
     "ts-node": "^10.9.1",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "dotenv": "^17.4.2"
   },
   "dependencies": {
-    "@xenova/transformers": "^2.17.2",
-    "dotenv": "^17.4.2"
+    "@xenova/transformers": "^2.17.2"
   },
   "description": "",
   "main": "index.js",
