@@ -64,16 +64,16 @@ jobs:
           fi
 
           if [ "$ENV_INPUT" = "dev" ]; then
-            xvfb-run -a npx playwright test $GREP_ARG --project=dev
+            xvfb-run -a npm run test:dev -- $GREP_ARG
 
           elif [ "$ENV_INPUT" = "qa" ]; then
-            xvfb-run -a npx playwright test $GREP_ARG --project=qa
+            xvfb-run -a npm run test:qa -- $GREP_ARG  
 
           elif [ "$ENV_INPUT" = "staging" ]; then
-            xvfb-run -a npx playwright test $GREP_ARG --project=staging
+            xvfb-run -a npm run test:staging -- $GREP_ARG
 
           elif [ "$ENV_INPUT" = "prod" ]; then
-            xvfb-run -a npx playwright test $GREP_ARG --project=prod
+            xvfb-run -a npm run test:prod -- $GREP_ARG
 
           else
             echo "Invalid Environment Selected"

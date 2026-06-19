@@ -5,7 +5,9 @@
   "scripts": {
     "start": "node --loader ts-node/esm --no-warnings src/test/demo.ts",
     "test/api": "cross-env ENV=dev npx playwright test",
-    "test": "cross-env ENV=dev npx playwright test",
+    "test:dev": "cross-env ENV=dev npx playwright test",
+    "test:qa": "cross-env ENV=qa npx playwright test",
+    "test:prod": "cross-env ENV=prod npx playwright test",
     "test/e2e": "cross-env ENV=dev playwright test",
     "test/performance": "cross-env ENV=dev k6 run k6-tests/scripts/chatbot.test.ts"
   },
