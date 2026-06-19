@@ -2,7 +2,7 @@ import { test, expect } from '../../fixture/pageFixture';
 import { loginAsTeacher } from '../../utils/login';
 
 test.describe('Cumulative Performance Report', () => {
-  test('should launch application, login, and run cumulative performance report for Reading subject', async ( {page}) => {
+  test('should launch application, login, and run cumulative performance report for Reading subject @smoke', async ( {page}) => {
 
     if (!process.env.BASEURL) {
       throw new Error('Missing required environment variable: BASEURL');
