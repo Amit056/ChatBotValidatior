@@ -21,7 +21,10 @@ export const test = base.extend<MyFixtures>({
   // New context for every test
   context: async ({ browser }, use) => {
     const context = await browser.newContext({
-      viewport: null
+      viewport: null,
+      recordVideo: {
+        dir: 'test-results/videos'
+      }
     });
 
     await use(context);
@@ -38,5 +41,20 @@ export const test = base.extend<MyFixtures>({
     await page.close();
   }
 });
-// Export expect for use in tests
+
+// Attach video to Allure
+test.afterEach(async ({ page }, testInfo) => {
+  if (testInfo.status !== testInfo.expectedStatus) {
+
+    const videoPath = await page.video()?.path();
+
+    if (videoPath) {
+      await testInfo.attach('Execution Video', {
+        path: videoPath,
+        contentType: 'video/webm'
+      });
+    }
+  }
+});
+
 export { expect };
