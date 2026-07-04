@@ -14,7 +14,8 @@
     "allure:open": "allure open allure-report",
     "pretest:tag": "npm run clean:allure",
     "posttest": "npm run allure:generate && npm run allure:open",
-	  "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+	  "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+	  "2nd commit"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
