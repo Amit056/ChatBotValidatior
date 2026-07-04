@@ -13,7 +13,8 @@
 	  "allure:generate": "allure generate allure-results --clean -o allure-report",
     "allure:open": "allure open allure-report",
     "pretest:tag": "npm run clean:allure",
-    "posttest": "npm run allure:generate && npm run allure:open"
+    "posttest": "npm run allure:generate && npm run allure:open",
+	  "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
