@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { buildGetCPReportPayload } from '../../payload/getCPReportData.payload';
 
 
-test('GetCPReportData - stable API test', async ({ request }) => {
+test.only('GetCPReportData - stable API test', async ({ request }) => {
   const url = `${process.env.API_BASE_REPORTS_URL}/graphql`;
   const payload = await buildGetCPReportPayload(request);
   const response = await request.post(url, {
@@ -72,6 +72,7 @@ test('GetCPReportData - stable API test with invalid teacher ID', async ({ reque
     },
     data: payload
   });
+  
 
   // ✅ Parse response
   const body = await response.json();
