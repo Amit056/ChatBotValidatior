@@ -8,7 +8,7 @@ declare global {
     namespace NodeJS {
         interface ProcessEnv {
             // Environment Selection
-            ENV: 'dev' | 'qa' | 'prod' | 'aci' | 'production' | 'staging';
+            ENV: 'dev' | 'qa' | 'prod' | 'aci' | 'production' | 'staging'| 'uniknow';
             
             // API Configuration
             API_BASE_TEACHER_URL: string;
@@ -38,6 +38,9 @@ declare global {
             AdminUserName: string;
             AdminPassWord: string;
             LearnerPassWord: string;
+            UNIKNOW_BASE_URL: string;
+            UNIKNOW_USERNAME: string;
+            UNIKNOW_PASSWORD: string;
         }
     }
 }

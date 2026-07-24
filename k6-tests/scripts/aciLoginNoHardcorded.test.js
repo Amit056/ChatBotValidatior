@@ -24,11 +24,17 @@ if (!CONFIG) {
 // ✅ Options
 export let options = {
   vus: 1,
-  iterations: 1,
+  // iterations: 1,
+  stages:[
+    { duration: '1s', target: 1 },
+    { duration: '5s', target: 5 },
+    { duration: '9s', target: 0 },
+  ],
   thresholds: {
     http_req_duration: ['p(95)<2000'],
     checks: ['rate>0.95'],
-  },
+    'http_req_duration{name:bookmark_courses}': ['p(95)<2000'],
+}
 };
 
 export default function () {
@@ -141,9 +147,7 @@ export default function () {
   group('📚 Bookmark Courses', function () {
 
     let bookmarkRes = http.get(
-      `${CONFIG.FINAL_URL}/api/catalog/v2/bookmark/courses/?user_id=${user_id}&page_size=12&page=1`,
-      authHeaders
-    );
+      `${CONFIG.FINAL_URL}/api/catalog/v2/bookmark/courses/?user_id=${user_id}&page_size=12&page=1`,authHeaders,{tags: { name: 'bookmark_courses' }});
 
     let data = bookmarkRes.json();
 

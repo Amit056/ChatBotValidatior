@@ -88,7 +88,7 @@
 - Avoid:
   - XPath
   - Deep/nested CSS selectors
-  -getByText(...)
+  - getByText(...)
 
 
 - Use stable and readable selectors whenever possible.
@@ -117,9 +117,9 @@
   - Ready to run
 
 
-========================
+=============================
 8) EXPECTED RESULT VALIDATION
-========================
+=============================
 - The agent MUST validate ALL expected results provided in the test case.
 
 - Every expected result MUST have a corresponding assertion using:

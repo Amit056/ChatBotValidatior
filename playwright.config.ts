@@ -4,8 +4,8 @@ import { invokeBrowser } from './src/helper/browsers/browserManager';
 import os from 'os';
 import { Status } from 'allure-js-commons'; 
 
-getEnv(); // Load environment variables from .env file based on ENV value
-invokeBrowser(); // Initialize browser based on BROWSER environment variable  
+ getEnv(); // Load environment variables from .env file based on ENV value
+// invokeBrowser(); // Initialize browser based on BROWSER environment variable  
 export default defineConfig({
   testDir: './src/tests',
   fullyParallel: true,
@@ -54,9 +54,12 @@ export default defineConfig({
   
   ],
   use: {
-   screenshot: 'only-on-failure',
-   video: 'retain-on-failure',
-   trace: 'on', 
+  // screenshot: 'on',
+  /**
+   * If you're creating your own fixture, Playwright ignores the use.video setting from playwright.config.ts.
+   */
+  // video: 'on',
+  trace: 'on', 
   }
 });
 
